@@ -1,0 +1,49 @@
+{
+  "name": "express-extractheaders",
+  "version": "0.1.0",
+  "description": "Express middleware for setting response headers based on <meta http-equiv=... content=...> tags in the response body",
+  "main": "lib/expressExtractHeaders.js",
+  "scripts": {
+    "test": "mocha",
+    "prepublish": "npm test",
+    "lint": "jshint .",
+    "travis": "npm run lint && NODE_ENV=development ./node_modules/.bin/istanbul cover ./node_modules/mocha/bin/_mocha -- --reporter dot && cat ./coverage/lcov.info | ./node_modules/coveralls/bin/coveralls.js",
+    "coverage": "NODE_ENV=development ./node_modules/.bin/istanbul cover ./node_modules/mocha/bin/_mocha -- --reporter dot"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git://github.com/papandreou/express-extractheaders.git"
+  },
+  "keywords": [
+    "express",
+    "middleware",
+    "headers",
+    "meta",
+    "http-equiv"
+  ],
+  "dependencies": {
+    "htmlparser2": "=3.7.3",
+    "passerror": "=1.0.1"
+  },
+  "devDependencies": {
+    "coveralls": "=2.11.1",
+    "express": "=4.6.1",
+    "express-hijackresponse": "=0.1.2",
+    "istanbul": "=0.3.0",
+    "jshint": "=2.5.2",
+    "mocha": "=1.20.1",
+    "sinon": "=1.10.3",
+    "unexpected": "=3.2.3",
+    "unexpected-express": "=0.4.5",
+    "unexpected-sinon": "=3.0.2"
+  },
+  "publishConfig": {
+    "repository": "http://registry.npmjs.org/"
+  },
+  "author": "Andreas Lind <andreas@one.com>",
+  "license": "BSD",
+  "bugs": {
+    "url": "https://github.com/papandreou/express-extractheaders/issues"
+  },
+  "homepage": "https://github.com/papandreou/express-extractheaders"
+}
