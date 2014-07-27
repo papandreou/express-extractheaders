@@ -4,6 +4,19 @@ var unexpected = require('unexpected'),
     express = require('express'),
     passError = require('passerror');
 
+function respondWithChunks(res, chunks) {
+    var nextChunkNumber = 0;
+    (function sendNextChunkOrEnd() {
+        if (nextChunkNumber < chunks.length) {
+            res.write(chunks[nextChunkNumber]);
+            nextChunkNumber += 1;
+            setImmediate(sendNextChunkOrEnd);
+        } else {
+            res.end();
+        }
+    }());
+}
+
 describe('expressExtractHeaders', function () {
     var expect = unexpected.clone()
         .installPlugin(require('unexpected-express'))
@@ -71,6 +84,112 @@ describe('expressExtractHeaders', function () {
                         Foo: 'Bar'
                     },
                     body: responseHtml
+                }
+            },
+            done
+        );
+    });
+
+    it('should set an empty header when a meta tag has http-equiv, but no content attribute', function (done) {
+        var responseHtml =
+            '<!DOCTYPE html>\n<html><head><meta http-equiv="Foo"></head><body>foo</body></html>';
+        expect(
+            express()
+                .use(expressExtractHeaders())
+                .use(function (req, res) {
+                    res.send(responseHtml);
+                }),
+            'to be middleware that processes', {
+                request: '/',
+                response: {
+                    headers: {
+                        'Content-Type': 'text/html; charset=utf-8',
+                        Foo: ''
+                    },
+                    body: responseHtml
+                }
+            },
+            done
+        );
+    });
+
+    it('should not break when there are other types of meta tags', function (done) {
+        var responseHtml =
+            '<!DOCTYPE html>\n<html><head><meta foo="bar"></head><body>foo</body></html>';
+        expect(
+            express()
+                .use(expressExtractHeaders())
+                .use(function (req, res) {
+                    res.send(responseHtml);
+                }),
+            'to be middleware that processes', {
+                request: '/',
+                response: {
+                    headers: {
+                        'Content-Type': 'text/html; charset=utf-8'
+                    },
+                    body: responseHtml
+                }
+            },
+            done
+        );
+    });
+
+    it('should work with responses with chunks before, during and after </head>', function (done) {
+        var responseHtmlChunks = [
+            '<!DOCTYPE html>\n',
+            '<html><head><META ',
+            'HTTP-EQUIV="Foo" CONTENT="Bar">',
+            '</head><body>',
+            'foo</body></html>'
+        ];
+        expect(
+            express()
+                .use(expressExtractHeaders())
+                .use(function (req, res) {
+                    res.setHeader('Content-Type', 'text/html; charset=utf-8');
+                    respondWithChunks(res, responseHtmlChunks);
+                }),
+            'to be middleware that processes', {
+                request: '/',
+                response: {
+                    headers: {
+                        'Content-Type': 'text/html; charset=utf-8',
+                        Foo: 'Bar'
+                    },
+                    body: responseHtmlChunks.join('')
+                }
+            },
+            done
+        );
+    });
+
+    it('should work with responses with chunks before, during and after </head> when the request method is HEAD', function (done) {
+        var responseHtmlChunks = [
+            '<!DOCTYPE html>\n',
+            '<html><head><META ',
+            'HTTP-EQUIV="Foo" CONTENT="Bar">',
+            '</head><body>',
+            'foo</body></html>'
+        ];
+        expect(
+            express()
+                .use(expressExtractHeaders())
+                .use(function (req, res) {
+                    res.setHeader('Content-Type', 'text/html; charset=utf-8');
+                    respondWithChunks(res, responseHtmlChunks);
+                }),
+            'to be middleware that processes', {
+                request: {
+                    method: 'HEAD',
+                    url: '/'
+                },
+                response: {
+                    headers: {
+                        'Content-Type': 'text/html; charset=utf-8',
+                        Foo: 'Bar'
+                    },
+                    body: new Buffer([])
                 }
             },
             done

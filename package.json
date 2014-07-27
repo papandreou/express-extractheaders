@@ -34,7 +34,7 @@
     "mocha": "=1.20.1",
     "sinon": "=1.10.3",
     "unexpected": "=3.2.3",
-    "unexpected-express": "=0.4.5",
+    "unexpected-express": "=0.4.6",
     "unexpected-sinon": "=3.0.2"
   },
   "publishConfig": {
