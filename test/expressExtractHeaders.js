@@ -9,6 +9,28 @@ describe('expressExtractHeaders', function () {
         .installPlugin(require('unexpected-express'))
         .installPlugin(require('unexpected-sinon'));
 
+    it('should leave a non-text/html response alone', function (done) {
+        expect(
+            express()
+                .use(expressExtractHeaders())
+                .use(function (req, res) {
+                    res.setHeader('Foo', 'Quux');
+                    res.setHeader('Content-Type', 'text/something-else');
+                    res.send('<!DOCTYPE html>\n<html><head><meta http-equiv="Foo" content="Bar"></head><body>foo</body></html>');
+                }),
+            'to be middleware that processes', {
+                request: '/',
+                response: {
+                    headers: {
+                        'Content-Type': 'text/something-else; charset=utf-8',
+                        Foo: 'Quux'
+                    }
+                }
+            },
+            done
+        );
+    });
+
     it('should specify response headers based on <meta> tags in the response body', function (done) {
         var responseHtml =
             '<!DOCTYPE html>\n<html><head><meta http-equiv="Foo" content="Bar"></head><body>foo</body></html>';
