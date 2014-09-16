@@ -296,4 +296,45 @@ describe('expressExtractHeaders', function () {
             })
         );
     });
+
+    it('should not break if a 304 is served from upstream', function (done) {
+        var app = express()
+            .use(expressExtractHeaders())
+            .use(function (req, res) {
+                res.send(304);
+            });
+        expect(
+            app,
+            'to be middleware that processes', {
+                request: '/',
+                response: 304
+            },
+            done
+        );
+    });
+
+    it('should not break if there is a parse error in the markup from upstream', function (done) {
+        var bogusHtml = '!!!-øæåæ<>>>å112389J/)(/HJ(=/HJQ(=WE';
+        var app = express()
+            .use(expressExtractHeaders())
+            .use(function (req, res) {
+                if (!res.getHeader('Content-Type')) {
+                    res.setHeader('Content-Type', 'text/html');
+                }
+                res.end(bogusHtml);
+            });
+        expect(
+            app,
+            'to be middleware that processes', {
+                request: '/',
+                response: {
+                    headers: {
+                        'Content-Type': 'text/html'
+                    },
+                    body: bogusHtml
+                }
+            },
+            done
+        );
+    });
 });
