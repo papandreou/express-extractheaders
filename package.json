@@ -27,7 +27,7 @@
     "passerror": "1.0.1"
   },
   "devDependencies": {
-    "coveralls": "2.11.1",
+    "coveralls": "2.11.2",
     "express": "4.10.1",
     "istanbul": "0.3.0",
     "jshint": "2.5.2",
