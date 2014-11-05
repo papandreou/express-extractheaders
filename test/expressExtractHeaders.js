@@ -337,4 +337,29 @@ describe('expressExtractHeaders', function () {
             done
         );
     });
+
+    it('should prevent the upstream middleware from delivering partial content', function (done) {
+        expect(
+            express()
+                .use(expressExtractHeaders())
+                .use(require('serve-static')(require('path').resolve(__dirname, '..', 'testdata'))),
+            'to be middleware that processes', {
+                request: {
+                    url: '/foo.txt',
+                    headers: {
+                        Range: 'bytes=2-2'
+                    }
+                },
+                response: {
+                    statusCode: 200,
+                    headers: {
+                        'Content-Type': 'text/plain; charset=UTF-8',
+                        'Content-Range': undefined
+                    },
+                    body: 'This is the complete foo.txt/EOF\n'
+                }
+            },
+            done
+        );
+    });
 });

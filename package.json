@@ -32,6 +32,7 @@
     "istanbul": "=0.3.0",
     "jshint": "=2.5.2",
     "mocha": "=1.20.1",
+    "serve-static": "=1.6.2",
     "sinon": "=1.10.3",
     "unexpected": "=4.1.6",
     "unexpected-express": "=0.5.5",
