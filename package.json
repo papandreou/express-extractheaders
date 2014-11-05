@@ -28,7 +28,7 @@
   },
   "devDependencies": {
     "coveralls": "2.11.1",
-    "express": "4.6.1",
+    "express": "4.10.1",
     "istanbul": "0.3.0",
     "jshint": "2.5.2",
     "mocha": "2.0.1",
