@@ -31,7 +31,7 @@ describe('expressExtractHeaders', function () {
                     res.setHeader('Content-Type', 'text/something-else');
                     res.send('<!DOCTYPE html>\n<html><head><meta http-equiv="Foo" content="Bar"></head><body>foo</body></html>');
                 }),
-            'to be middleware that processes', {
+            'to yield exchange', {
                 request: '/',
                 response: {
                     headers: {
@@ -53,7 +53,7 @@ describe('expressExtractHeaders', function () {
                 .use(function (req, res) {
                     res.send(responseHtml);
                 }),
-            'to be middleware that processes', {
+            'to yield exchange', {
                 request: '/',
                 response: {
                     headers: {
@@ -76,7 +76,7 @@ describe('expressExtractHeaders', function () {
                 .use(function (req, res) {
                     res.send(responseHtml);
                 }),
-            'to be middleware that processes', {
+            'to yield exchange', {
                 request: '/',
                 response: {
                     headers: {
@@ -99,7 +99,7 @@ describe('expressExtractHeaders', function () {
                 .use(function (req, res) {
                     res.send(responseHtml);
                 }),
-            'to be middleware that processes', {
+            'to yield exchange', {
                 request: '/',
                 response: {
                     headers: {
@@ -122,7 +122,7 @@ describe('expressExtractHeaders', function () {
                 .use(function (req, res) {
                     res.send(responseHtml);
                 }),
-            'to be middleware that processes', {
+            'to yield exchange', {
                 request: '/',
                 response: {
                     headers: {
@@ -150,7 +150,7 @@ describe('expressExtractHeaders', function () {
                     res.setHeader('Content-Type', 'text/html; charset=utf-8');
                     respondWithChunks(res, responseHtmlChunks);
                 }),
-            'to be middleware that processes', {
+            'to yield exchange', {
                 request: '/',
                 response: {
                     headers: {
@@ -179,7 +179,7 @@ describe('expressExtractHeaders', function () {
                     res.setHeader('Content-Type', 'text/html; charset=utf-8');
                     respondWithChunks(res, responseHtmlChunks);
                 }),
-            'to be middleware that processes', {
+            'to yield exchange', {
                 request: {
                     method: 'HEAD',
                     url: '/'
@@ -208,7 +208,7 @@ describe('expressExtractHeaders', function () {
                         res.end('<!DOCTYPE html>\n<html><head><meta http-equiv="Foo" content="Bar"></head><body>foo</body></html>');
                     }
                 }),
-            'to be middleware that processes', {
+            'to yield exchange', {
                 request: {
                     method: 'HEAD',
                     url: '/'
@@ -234,7 +234,7 @@ describe('expressExtractHeaders', function () {
             });
         expect(
             app,
-            'to be middleware that processes', {
+            'to yield exchange', {
                 request: '/',
                 response: {
                     headers: {
@@ -246,7 +246,7 @@ describe('expressExtractHeaders', function () {
             passError(done, function () {
                 expect(
                     app,
-                    'to be middleware that processes', {
+                    'to yield exchange', {
                         request: '/',
                         response: {
                             headers: {
@@ -272,7 +272,7 @@ describe('expressExtractHeaders', function () {
             });
         expect(
             app,
-            'to be middleware that processes', {
+            'to yield exchange', {
                 request: '/',
                 response: {
                     headers: {
@@ -283,7 +283,7 @@ describe('expressExtractHeaders', function () {
             passError(done, function () {
                 expect(
                     app,
-                    'to be middleware that processes', {
+                    'to yield exchange', {
                         request: '/',
                         response: {
                             headers: {
@@ -302,9 +302,9 @@ describe('expressExtractHeaders', function () {
             express()
                 .use(expressExtractHeaders())
                 .use(function (req, res) {
-                    res.send(304);
+                    res.status(304).end();
                 }),
-            'to be middleware that processes', {
+            'to yield exchange', {
                 request: '/',
                 response: 304
             },
@@ -323,7 +323,7 @@ describe('expressExtractHeaders', function () {
                     }
                     res.end(bogusHtml);
                 }),
-            'to be middleware that processes', {
+            'to yield exchange', {
                 request: '/',
                 response: {
                     headers: {
@@ -341,7 +341,7 @@ describe('expressExtractHeaders', function () {
             express()
                 .use(expressExtractHeaders())
                 .use(require('serve-static')(require('path').resolve(__dirname, '..', 'testdata'))),
-            'to be middleware that processes', {
+            'to yield exchange', {
                 request: {
                     url: '/foo.txt',
                     headers: {
