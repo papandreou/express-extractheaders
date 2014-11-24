@@ -34,8 +34,8 @@
     "mocha": "2.0.1",
     "serve-static": "1.6.2",
     "sinon": "1.10.3",
-    "unexpected": "5.0.0-beta15",
-    "unexpected-express": "2.1.0",
+    "unexpected": "5.0.0-beta19",
+    "unexpected-express": "2.3.0",
     "unexpected-sinon": "3.0.2"
   },
   "publishConfig": {
