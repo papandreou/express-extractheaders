@@ -23,8 +23,7 @@
   ],
   "dependencies": {
     "express-hijackresponse": "0.2.1",
-    "htmlparser2": "3.7.3",
-    "passerror": "1.0.1"
+    "htmlparser2": "3.7.3"
   },
   "devDependencies": {
     "coveralls": "2.11.2",

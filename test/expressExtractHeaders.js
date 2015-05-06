@@ -1,8 +1,7 @@
 /*global describe, it*/
 var unexpected = require('unexpected'),
     expressExtractHeaders = require('../lib/expressExtractHeaders'),
-    express = require('express'),
-    passError = require('passerror');
+    express = require('express');
 
 function respondWithChunks(res, chunks) {
     var nextChunkNumber = 0;
