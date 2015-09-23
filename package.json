@@ -1,6 +1,6 @@
 {
   "name": "express-extractheaders",
-  "version": "1.0.2",
+  "version": "1.0.3",
   "description": "Express middleware for setting response headers based on <meta http-equiv=... content=...> tags in the response body",
   "main": "lib/expressExtractHeaders.js",
   "scripts": {
