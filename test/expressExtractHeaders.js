@@ -335,4 +335,70 @@ describe('expressExtractHeaders', function () {
             }
         );
     });
+
+    it('should send the same extracted headers when the upstream middleware responds 304 and does not include the additional headers', function () {
+        var nextId = 1;
+
+        return expect(express()
+            .use(expressExtractHeaders())
+            .use(function (req, res) {
+                if (req.headers['if-none-match']) {
+                    res.setHeader('ETag', req.headers['if-none-match']);
+                    res.status(304).end();
+                } else {
+                    var id = nextId;
+                    nextId += 1;
+                    res.setHeader('ETag', '"foo' + id + '"');
+                    res.setHeader('Content-Type', 'text/html; charset=UTF-8');
+                    res.end('<!DOCTYPE html>\n<html><head><meta http-equiv="Foo" content="Bar' + id + '"></head><body>foo</body></html>');
+                }
+            }),
+            'to yield exchange', {
+                request: 'GET /',
+                response: {
+                    statusCode: 200,
+                    headers: {
+                        Foo: 'Bar1',
+                        ETag: '"foo1"'
+                    }
+                }
+            }).and('to yield exchange', {
+                request: {
+                    url: 'GET /',
+                    headers: {
+                        'If-None-Match': '"foo1"'
+                    }
+                },
+                response: {
+                    statusCode: 304,
+                    headers: {
+                        ETag: '"foo1"',
+                        Foo: 'Bar1'
+                    }
+                }
+            }).and('to yield exchange', {
+                request: 'GET /',
+                response: {
+                    statusCode: 200,
+                    headers: {
+                        ETag: '"foo2"',
+                        Foo: 'Bar2'
+                    }
+                }
+            }).and('to yield exchange', {
+                request: {
+                    url: 'GET /',
+                    headers: {
+                        'If-None-Match': '"foo2"'
+                    }
+                },
+                response: {
+                    statusCode: 304,
+                    headers: {
+                        ETag: '"foo2"',
+                        Foo: 'Bar2'
+                    }
+                }
+            });
+    });
 });
