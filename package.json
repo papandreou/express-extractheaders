@@ -30,14 +30,12 @@
     "express": "4.10.1",
     "istanbul": "^0.3.2",
     "jshint": "2.5.2",
-    "messy": "6.2.0",
     "mocha": "2.0.1",
     "serve-static": "1.7.1",
     "sinon": "1.10.3",
-    "unexpected": "7.0.5",
-    "unexpected-express": "6.2.3",
-    "unexpected-messy": "3.0.4",
-    "unexpected-sinon": "5.1.2"
+    "unexpected": "9.16.0",
+    "unexpected-express": "7.8.1",
+    "unexpected-sinon": "7.3.0"
   },
   "publishConfig": {
     "repository": "http://registry.npmjs.org/"
