@@ -33,7 +33,7 @@
     "mocha": "2.0.1",
     "serve-static": "1.7.1",
     "sinon": "1.10.3",
-    "unexpected": "9.16.0",
+    "unexpected": "9.16.1",
     "unexpected-express": "7.8.1",
     "unexpected-sinon": "7.3.0"
   },
