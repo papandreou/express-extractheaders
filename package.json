@@ -23,7 +23,7 @@
   ],
   "dependencies": {
     "hijackresponse": "1.0.1",
-    "htmlparser2": "3.9.1"
+    "htmlparser2-papandreou": "3.9.1-patch1"
   },
   "devDependencies": {
     "coveralls": "2.11.2",
