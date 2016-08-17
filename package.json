@@ -8,7 +8,7 @@
     "prepublish": "npm test",
     "lint": "jshint .",
     "travis": "npm run lint && npm run coverage && cat ./coverage/lcov.info | coveralls",
-    "coverage": "NODE_ENV=development istanbul cover _mocha -- --reporter dot"
+    "coverage": "NODE_ENV=development istanbul cover _mocha -- --reporter dot && echo google-chrome coverage/lcov-report/index.html"
   },
   "repository": {
     "type": "git",
