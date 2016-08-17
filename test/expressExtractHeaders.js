@@ -182,7 +182,7 @@ describe('expressExtractHeaders', function () {
                         'Content-Type': 'text/html; charset=utf-8',
                         Foo: 'Bar'
                     },
-                    body: undefined
+                    body: ''
                 }
             }
         );
@@ -209,7 +209,7 @@ describe('expressExtractHeaders', function () {
                     headers: {
                         Foo: 'Bar'
                     },
-                    body: undefined
+                    body: ''
                 }
             }
         );
@@ -400,5 +400,134 @@ describe('expressExtractHeaders', function () {
                     }
                 }
             });
+    });
+
+    it('should remove an X-Frame-Options meta tag from the response, and lift it up as an HTTP response header', function () {
+        return expect(
+            express()
+                .use(expressExtractHeaders())
+                .use(function (req, res) {
+                    res.send('<!DOCTYPE html>\n<html><head><meta http-equiv="X-Frame-Options" content="SAMEORIGIN"></head><body>foo</body></html>');
+                }),
+            'to yield exchange', {
+                request: '/',
+                response: {
+                    headers: {
+                        'Content-Type': 'text/html; charset=utf-8',
+                        'X-Frame-Options': 'SAMEORIGIN'
+                    },
+                    body: '<!DOCTYPE html>\n<html><head></head><body>foo</body></html>'
+                }
+            }
+        );
+    });
+
+    it('should remove an X-Frame-Options meta tag from the response, and lift it up as an HTTP response header, even when the meta tag has the /> closing marker (grrr)', function () {
+        return expect(
+            express()
+                .use(expressExtractHeaders())
+                .use(function (req, res) {
+                    res.send('<!DOCTYPE html>\n<html><head><meta http-equiv="X-Frame-Options" content="SAMEORIGIN" /></head><body>foo</body></html>');
+                }),
+            'to yield exchange', {
+                request: '/',
+                response: {
+                    headers: {
+                        'Content-Type': 'text/html; charset=utf-8',
+                        'X-Frame-Options': 'SAMEORIGIN'
+                    },
+                    body: '<!DOCTYPE html>\n<html><head></head><body>foo</body></html>'
+                }
+            }
+        );
+    });
+
+    it('should remove two X-Frame-Options meta tags from the response', function () {
+        return expect(
+            express()
+                .use(expressExtractHeaders())
+                .use(function (req, res) {
+                    res.send('<!DOCTYPE html>\n<html><head><meta http-equiv="X-Frame-Options" content="SAMEORIGIN" /><title>thetitle</title><meta http-equiv="X-Frame-Options" content="SAMEORIGIN" /></head><body>foo</body></html>');
+                }),
+            'to yield exchange', {
+                request: '/',
+                response: {
+                    headers: {
+                        'Content-Type': 'text/html; charset=utf-8',
+                        'X-Frame-Options': 'SAMEORIGIN'
+                    },
+                    body: '<!DOCTYPE html>\n<html><head><title>thetitle</title></head><body>foo</body></html>'
+                }
+            }
+        );
+    });
+
+    expect.addAssertion('<array> to come out as <string>', function (expect, subject, value) {
+        var app = express()
+            .use(expressExtractHeaders({memoize: true}))
+            .use(function (req, res) {
+                res.set('Content-Type', 'text/html; charset=utf-8');
+                res.set('ETag', '"foo"');
+                if (req.headers['if-none-match'] === '"foo"') {
+                    res.status(304).end();
+                } else {
+                    subject.forEach(function (chunk) {
+                        res.write(chunk);
+                    });
+                    res.end();
+                }
+            });
+        return expect(app, 'to yield exchange', {
+            request: '/',
+            response: {
+                headers: {
+                    'Content-Type': 'text/html; charset=utf-8',
+                    'X-Frame-Options': 'SAMEORIGIN'
+                },
+                body: value
+            }
+        }).then(function () {
+            // Check that we get the same result on a subsequent request
+            return expect(app, 'to yield exchange', {
+                request: '/',
+                response: {
+                    headers: {
+                        'Content-Type': 'text/html; charset=utf-8',
+                        'X-Frame-Options': 'SAMEORIGIN'
+                    },
+                    body: value
+                }
+            });
+        });
+    });
+
+    it('should omit two meta tags that reside in separate chunks ', function () {
+        return expect([
+            '<!DOCTYPE html>\n<html><head><meta http-equiv="X-Frame-Options" content="SAMEORIGIN" />',
+            '<title>thetitle</title><meta http-equiv="X-Frame-Options" content="SAMEORIGIN" /></head><body>foo</body></html>'
+        ], 'to come out as', '<!DOCTYPE html>\n<html><head><title>thetitle</title></head><body>foo</body></html>');
+    });
+
+    it('should omit a meta tag that is split across two chunks', function () {
+        return expect([
+            '<!DOCTYPE html>\n<html><head><meta http-equiv="X-Frame-Options" content="SAMEORIG',
+            'IN" /><title>thetitle</title><meta http-equiv="X-Frame-Options" content="SAMEORIGIN" /></head><body>foo</body></html>'
+        ], 'to come out as', '<!DOCTYPE html>\n<html><head><title>thetitle</title></head><body>foo</body></html>');
+    });
+
+    it('should omit a meta tag that fully occupies a single chunk', function () {
+        return expect([
+            '<!DOCTYPE html>\n<html><head>',
+            '<meta http-equiv="X-Frame-Options" content="SAMEORIGIN" />',
+            '<title>thetitle</title></head><body>foo</body></html>'
+        ], 'to come out as', '<!DOCTYPE html>\n<html><head><title>thetitle</title></head><body>foo</body></html>');
+    });
+
+    it('should omit a meta tag spread across three chunks', function () {
+        return expect([
+            '<!DOCTYPE html>\n<html><head><meta ',
+            'http-equiv="X-Frame-Options" content="SAMEORIGIN"',
+            ' /><title>thetitle</title></head><body>foo</body></html>'
+        ], 'to come out as', '<!DOCTYPE html>\n<html><head><title>thetitle</title></head><body>foo</body></html>');
     });
 });
