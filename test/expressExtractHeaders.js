@@ -530,4 +530,30 @@ describe('expressExtractHeaders', function () {
             ' /><title>thetitle</title></head><body>foo</body></html>'
         ], 'to come out as', '<!DOCTYPE html>\n<html><head><title>thetitle</title></head><body>foo</body></html>');
     });
+
+    it('should adjust Content-Length when omitting ranges', function () {
+        var app = express()
+            .use(expressExtractHeaders({memoize: true}))
+            .use(function (req, res) {
+                res.set('Content-Length', '114');
+                res.send('<!DOCTYPE html>\n<html><head><meta http-equiv="X-Frame-Options" content="SAMEORIGIN"></head><body>foo</body></html>');
+            });
+        return expect(app, 'to yield exchange', {
+            request: '/',
+            response: {
+                headers: {
+                    'Content-Length': 114 - 56
+                }
+            }
+        }).then(function () {
+            expect(app, 'to yield exchange', {
+                request: '/',
+                response: {
+                    headers: {
+                        'Content-Length': 114 - 56
+                    }
+                }
+            });
+        });
+    });
 });
