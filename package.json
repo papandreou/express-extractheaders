@@ -22,7 +22,7 @@
     "http-equiv"
   ],
   "dependencies": {
-    "hijackresponse": "1.0.1",
+    "hijackresponse": "2.0.0",
     "htmlparser2-papandreou": "3.9.1-patch1"
   },
   "devDependencies": {
