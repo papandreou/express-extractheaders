@@ -536,7 +536,9 @@ describe('expressExtractHeaders', function () {
             .use(expressExtractHeaders({memoize: true}))
             .use(function (req, res) {
                 res.set('Content-Length', '114');
-                res.send('<!DOCTYPE html>\n<html><head><meta http-equiv="X-Frame-Options" content="SAMEORIGIN"></head><body>foo</body></html>');
+                res.set('Content-Type', 'text/html; charset=utf-8');
+                res.write('<!DOCTYPE html>\n<html><head><meta http-equiv="X-Frame-Options" content="SAMEORIGIN"></head><body>foo</body></html>');
+                res.end();
             });
         return expect(app, 'to yield exchange', {
             request: '/',
@@ -546,7 +548,35 @@ describe('expressExtractHeaders', function () {
                 }
             }
         }).then(function () {
-            expect(app, 'to yield exchange', {
+            return expect(app, 'to yield exchange', {
+                request: '/',
+                response: {
+                    headers: {
+                        'Content-Length': 114 - 56
+                    }
+                }
+            });
+        });
+    });
+
+    it('should adjust Content-Length when omitting ranges, even when it has been provided as a number', function () {
+        var app = express()
+            .use(expressExtractHeaders({memoize: true}))
+            .use(function (req, res) {
+                res.set('Content-Type', 'text/html; charset=utf-8');
+                res.setHeader('Content-Length', 114); // Doesn't coerce to string in node.js 6.3.0
+                res.write('<!DOCTYPE html>\n<html><head><meta http-equiv="X-Frame-Options" content="SAMEORIGIN"></head><body>foo</body></html>');
+                res.end();
+            });
+        return expect(app, 'to yield exchange', {
+            request: '/',
+            response: {
+                headers: {
+                    'Content-Length': 114 - 56
+                }
+            }
+        }).then(function () {
+            return expect(app, 'to yield exchange', {
                 request: '/',
                 response: {
                     headers: {
