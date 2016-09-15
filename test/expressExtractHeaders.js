@@ -64,6 +64,102 @@ describe('expressExtractHeaders', function () {
         );
     });
 
+    expect.addAssertion('<string> to result in a Link header of <any>', function (expect, subject, value) {
+        return expect(
+            express()
+                .use(expressExtractHeaders())
+                .use(function (req, res) {
+                    res.send('<!DOCTYPE html>\n<html><head>' + subject + '</head><body>foo</body></html>');
+                }),
+            'to yield exchange', {
+                request: '/',
+                response: {
+                    headers: {
+                        'Content-Type': 'text/html; charset=utf-8',
+                        Link: value
+                    }
+                }
+            }
+        );
+    });
+
+    it('should extract <link rel="preconnect">', function () {
+        return expect(
+            '<link rel="preconnect" href="//example.com">',
+            'to result in a Link header of',
+            '<//example.com>; rel=preconnect'
+        );
+    });
+
+    it('should extract two link elements', function () {
+        return expect(
+            '<link rel="preconnect" href="//example.com">' +
+            '<link rel="prefetch" href="//foobar.com">',
+            'to result in a Link header of', [
+                '<//example.com>; rel=preconnect',
+                '<//foobar.com>; rel=prefetch'
+            ]
+        );
+    });
+
+    it('should extract three link elements', function () {
+        return expect(
+            '<link rel="prefetch" href="//example.com/logo-hires.jpg" as="image">' +
+            '<link rel="preconnect" href="//example.com">' +
+            '<link rel="prefetch" href="//foobar.com">',
+            'to result in a Link header of', [
+                '<//example.com/logo-hires.jpg>; rel=prefetch; as=image',
+                '<//example.com>; rel=preconnect',
+                '<//foobar.com>; rel=prefetch'
+            ]
+        );
+    });
+
+    it('should ignore unsupported link elements based on the rel attribute', function () {
+        return expect(
+            '<link rel="foobar" href="//example.com/logo-hires.jpg" as="image">', 'to result in a Link header of', undefined);
+    });
+
+    it('should extract <LINK REL="preconnect" HREF=...>', function () {
+        return expect(
+            '<LINK REL="preconnect" HREF="//example.com">',
+            'to result in a Link header of',
+            '<//example.com>; rel=preconnect'
+        );
+    });
+
+    it('should extract the "as" attribute correctly', function () {
+        return expect(
+            '<link rel="prefetch" href="//example.com/logo-hires.jpg" as="image">',
+            'to result in a Link header of',
+            '<//example.com/logo-hires.jpg>; rel=prefetch; as=image'
+        );
+    });
+
+    it('should extract the "pr" attribute correctly', function () {
+        return expect(
+            '<link rel="prerender" href="//example.com/next-page.html" pr="0.75">',
+            'to result in a Link header of',
+            '<//example.com/next-page.html>; rel=prerender; pr=0.75'
+        );
+    });
+
+    it('should extract the "crossorigin" attribute when it has a value', function () {
+        return expect(
+            '<link rel="prefetch" href="//example.com/next-page.html" as="html" crossorigin="use-credentials">',
+            'to result in a Link header of',
+            '<//example.com/next-page.html>; rel=prefetch; as=html; crossorigin=use-credentials'
+        );
+    });
+
+    it('should extract the "crossorigin" attribute when it has no value', function () {
+        return expect(
+            '<link rel="prefetch" href="//example.com/next-page.html" as="html" crossorigin></head><body>foo</body></html>',
+            'to result in a Link header of',
+            '<//example.com/next-page.html>; rel=prefetch; as=html; crossorigin'
+        );
+    });
+
     it('should specify response headers based on <META> tags in the response body', function () {
         var responseHtml =
             '<!DOCTYPE html>\n<html><head><META HTTP-EQUIV="Foo" CONTENT="Bar"></head><body>foo</body></html>';
