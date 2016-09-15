@@ -64,199 +64,99 @@ describe('expressExtractHeaders', function () {
         );
     });
 
-    it('should extract <link rel="preconnect">', function () {
-        var responseHtml =
-            '<!DOCTYPE html>\n<html><head><link rel="preconnect" href="//example.com"></head><body>foo</body></html>';
+    expect.addAssertion('<string> to result in a Link header of <any>', function (expect, subject, value) {
         return expect(
             express()
                 .use(expressExtractHeaders())
                 .use(function (req, res) {
-                    res.send(responseHtml);
+                    res.send('<!DOCTYPE html>\n<html><head>' + subject + '</head><body>foo</body></html>');
                 }),
             'to yield exchange', {
                 request: '/',
                 response: {
                     headers: {
                         'Content-Type': 'text/html; charset=utf-8',
-                        Link: '<//example.com>; rel=preconnect'
+                        Link: value
                     }
                 }
             }
+        );
+    });
+
+    it('should extract <link rel="preconnect">', function () {
+        return expect(
+            '<link rel="preconnect" href="//example.com">',
+            'to result in a Link header of',
+            '<//example.com>; rel=preconnect'
         );
     });
 
     it('should extract two link elements', function () {
-        var responseHtml =
-            '<!DOCTYPE html>\n<html><head><link rel="preconnect" href="//example.com"><link rel="prefetch" href="//foobar.com"></head><body>foo</body></html>';
         return expect(
-            express()
-                .use(expressExtractHeaders())
-                .use(function (req, res) {
-                    res.send(responseHtml);
-                }),
-            'to yield exchange', {
-                request: '/',
-                response: {
-                    headers: {
-                        'Content-Type': 'text/html; charset=utf-8',
-                        Link: [
-                            '<//example.com>; rel=preconnect',
-                            '<//foobar.com>; rel=prefetch'
-                        ]
-                    }
-                }
-            }
+            '<link rel="preconnect" href="//example.com">' +
+            '<link rel="prefetch" href="//foobar.com">',
+            'to result in a Link header of', [
+                '<//example.com>; rel=preconnect',
+                '<//foobar.com>; rel=prefetch'
+            ]
         );
     });
 
     it('should extract three link elements', function () {
-        var responseHtml =
-            '<!DOCTYPE html>\n<html><head><link rel="prefetch" href="//example.com/logo-hires.jpg" as="image"><link rel="preconnect" href="//example.com"><link rel="prefetch" href="//foobar.com"></head><body>foo</body></html>';
         return expect(
-            express()
-                .use(expressExtractHeaders())
-                .use(function (req, res) {
-                    res.send(responseHtml);
-                }),
-            'to yield exchange', {
-                request: '/',
-                response: {
-                    headers: {
-                        'Content-Type': 'text/html; charset=utf-8',
-                        Link: [
-                            '<//example.com/logo-hires.jpg>; rel=prefetch; as=image',
-                            '<//example.com>; rel=preconnect',
-                            '<//foobar.com>; rel=prefetch'
-                        ]
-                    }
-                }
-            }
+            '<link rel="prefetch" href="//example.com/logo-hires.jpg" as="image">' +
+            '<link rel="preconnect" href="//example.com">' +
+            '<link rel="prefetch" href="//foobar.com">',
+            'to result in a Link header of', [
+                '<//example.com/logo-hires.jpg>; rel=prefetch; as=image',
+                '<//example.com>; rel=preconnect',
+                '<//foobar.com>; rel=prefetch'
+            ]
         );
     });
 
     it('should ignore unsupported link elements based on the rel attribute', function () {
-        var responseHtml =
-            '<!DOCTYPE html>\n<html><head><link rel="foobar" href="//example.com/logo-hires.jpg" as="image"></head><body>foo</body></html>';
         return expect(
-            express()
-                .use(expressExtractHeaders())
-                .use(function (req, res) {
-                    res.send(responseHtml);
-                }),
-            'to yield exchange', {
-                request: '/',
-                response: {
-                    headers: {
-                        'Content-Type': 'text/html; charset=utf-8',
-                        Link: undefined
-                    }
-                }
-            }
-        );
+            '<link rel="foobar" href="//example.com/logo-hires.jpg" as="image">', 'to result in a Link header of', undefined);
     });
 
     it('should extract <LINK REL="preconnect" HREF=...>', function () {
-        var responseHtml =
-            '<!DOCTYPE html>\n<html><head><LINK REL="preconnect" HREF="//example.com"></head><body>foo</body></html>';
         return expect(
-            express()
-                .use(expressExtractHeaders())
-                .use(function (req, res) {
-                    res.send(responseHtml);
-                }),
-            'to yield exchange', {
-                request: '/',
-                response: {
-                    headers: {
-                        'Content-Type': 'text/html; charset=utf-8',
-                        Link: '<//example.com>; rel=preconnect'
-                    }
-                }
-            }
+            '<LINK REL="preconnect" HREF="//example.com">',
+            'to result in a Link header of',
+            '<//example.com>; rel=preconnect'
         );
     });
 
     it('should extract the "as" attribute correctly', function () {
-        var responseHtml =
-            '<!DOCTYPE html>\n<html><head><link rel="prefetch" href="//example.com/logo-hires.jpg" as="image"></head><body>foo</body></html>';
         return expect(
-            express()
-                .use(expressExtractHeaders())
-                .use(function (req, res) {
-                    res.send(responseHtml);
-                }),
-            'to yield exchange', {
-                request: '/',
-                response: {
-                    headers: {
-                        'Content-Type': 'text/html; charset=utf-8',
-                        Link: '<//example.com/logo-hires.jpg>; rel=prefetch; as=image'
-                    }
-                }
-            }
+            '<link rel="prefetch" href="//example.com/logo-hires.jpg" as="image">',
+            'to result in a Link header of',
+            '<//example.com/logo-hires.jpg>; rel=prefetch; as=image'
         );
     });
 
     it('should extract the "pr" attribute correctly', function () {
-        var responseHtml =
-            '<!DOCTYPE html>\n<html><head><link rel="prerender" href="//example.com/next-page.html" pr="0.75"></head><body>foo</body></html>';
         return expect(
-            express()
-                .use(expressExtractHeaders())
-                .use(function (req, res) {
-                    res.send(responseHtml);
-                }),
-            'to yield exchange', {
-                request: '/',
-                response: {
-                    headers: {
-                        'Content-Type': 'text/html; charset=utf-8',
-                        Link: '<//example.com/next-page.html>; rel=prerender; pr=0.75'
-                    }
-                }
-            }
+            '<link rel="prerender" href="//example.com/next-page.html" pr="0.75">',
+            'to result in a Link header of',
+            '<//example.com/next-page.html>; rel=prerender; pr=0.75'
         );
     });
 
     it('should extract the "crossorigin" attribute when it has a value', function () {
-        var responseHtml =
-            '<!DOCTYPE html>\n<html><head><link rel="prefetch" href="//example.com/next-page.html" as="html" crossorigin="use-credentials"></head><body>foo</body></html>';
         return expect(
-            express()
-                .use(expressExtractHeaders())
-                .use(function (req, res) {
-                    res.send(responseHtml);
-                }),
-            'to yield exchange', {
-                request: '/',
-                response: {
-                    headers: {
-                        'Content-Type': 'text/html; charset=utf-8',
-                        Link: '<//example.com/next-page.html>; rel=prefetch; as=html; crossorigin=use-credentials'
-                    }
-                }
-            }
+            '<link rel="prefetch" href="//example.com/next-page.html" as="html" crossorigin="use-credentials">',
+            'to result in a Link header of',
+            '<//example.com/next-page.html>; rel=prefetch; as=html; crossorigin=use-credentials'
         );
     });
 
     it('should extract the "crossorigin" attribute when it has no value', function () {
-        var responseHtml =
-            '<!DOCTYPE html>\n<html><head><link rel="prefetch" href="//example.com/next-page.html" as="html" crossorigin></head><body>foo</body></html>';
         return expect(
-            express()
-                .use(expressExtractHeaders())
-                .use(function (req, res) {
-                    res.send(responseHtml);
-                }),
-            'to yield exchange', {
-                request: '/',
-                response: {
-                    headers: {
-                        'Content-Type': 'text/html; charset=utf-8',
-                        Link: '<//example.com/next-page.html>; rel=prefetch; as=html; crossorigin'
-                    }
-                }
-            }
+            '<link rel="prefetch" href="//example.com/next-page.html" as="html" crossorigin></head><body>foo</body></html>',
+            'to result in a Link header of',
+            '<//example.com/next-page.html>; rel=prefetch; as=html; crossorigin'
         );
     });
 
