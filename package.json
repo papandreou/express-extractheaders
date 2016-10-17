@@ -26,16 +26,16 @@
     "htmlparser2-papandreou": "3.9.1-patch1"
   },
   "devDependencies": {
-    "coveralls": "2.11.2",
-    "express": "4.10.1",
-    "istanbul": "^0.3.2",
-    "jshint": "2.5.2",
-    "mocha": "3.0.2",
-    "serve-static": "1.7.1",
-    "sinon": "1.17.5",
-    "unexpected": "10.15.1",
-    "unexpected-express": "8.3.0",
-    "unexpected-sinon": "10.2.1"
+    "coveralls": "^2.11.14",
+    "express": "^4.14.0",
+    "istanbul": "^0.4.5",
+    "jshint": "^2.9.3",
+    "mocha": "^3.1.2",
+    "serve-static": "^1.11.1",
+    "sinon": "^1.17.6",
+    "unexpected": "^10.18.1",
+    "unexpected-express": "^8.3.2",
+    "unexpected-sinon": "^10.5.0"
   },
   "publishConfig": {
     "repository": "http://registry.npmjs.org/"
