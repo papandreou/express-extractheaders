@@ -682,4 +682,28 @@ describe('expressExtractHeaders', function () {
             });
         });
     });
+
+    it('should convert newlines to spaces when serving headers', function () {
+        var app = express()
+            .use(expressExtractHeaders({memoize: true}))
+            .use(function (req, res) {
+                res.set('Content-Length', '114');
+                res.set('Content-Type', 'text/html; charset=utf-8');
+                res.write(
+                    '<!DOCTYPE html>\n<html><head><meta http-equiv="Content-Security-Policy" content="\n' +
+                    'default-src \'none\';\n' +
+                    'script-src \'self\';\n' +
+                    'style-src \'self\';\n' +
+                    '"></head><body>foo</body></html>');
+                res.end();
+            });
+        return expect(app, 'to yield exchange', {
+            request: '/',
+            response: {
+                headers: {
+                    'Content-Security-Policy': 'default-src \'none\'; script-src \'self\'; style-src \'self\';'
+                }
+            }
+        });
+    });
 });
