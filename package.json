@@ -22,7 +22,7 @@
     "http-equiv"
   ],
   "dependencies": {
-    "hijackresponse": "2.0.0",
+    "hijackresponse": "2.0.1",
     "htmlparser2": "3.9.2"
   },
   "devDependencies": {
