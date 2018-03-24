@@ -40,7 +40,7 @@
   "publishConfig": {
     "repository": "http://registry.npmjs.org/"
   },
-  "author": "Andreas Lind <andreas@one.com>",
+  "author": "Andreas Lind <andreaslindpetersen@gmail.com>",
   "license": "BSD-3-Clause",
   "bugs": {
     "url": "https://github.com/papandreou/express-extractheaders/issues"
