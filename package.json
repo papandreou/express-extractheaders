@@ -34,7 +34,7 @@
     "serve-static": "^1.11.1",
     "sinon": "^1.17.6",
     "unexpected": "^10.18.1",
-    "unexpected-express": "^8.3.2",
+    "unexpected-express": "^10.1.0",
     "unexpected-sinon": "^10.5.0"
   },
   "publishConfig": {
