@@ -30,7 +30,7 @@
     "express": "^4.14.0",
     "istanbul": "^0.4.5",
     "jshint": "^2.9.3",
-    "mocha": "^3.1.2",
+    "mocha": "^5.2.0",
     "serve-static": "^1.11.1",
     "sinon": "^1.17.6",
     "unexpected": "^10.18.1",
