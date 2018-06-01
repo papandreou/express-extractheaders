@@ -37,9 +37,6 @@
     "unexpected-express": "^10.1.0",
     "unexpected-sinon": "^10.5.0"
   },
-  "publishConfig": {
-    "repository": "http://registry.npmjs.org/"
-  },
   "author": "Andreas Lind <andreaslindpetersen@gmail.com>",
   "license": "BSD-3-Clause",
   "bugs": {
