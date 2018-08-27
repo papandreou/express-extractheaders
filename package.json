@@ -26,6 +26,7 @@
     "htmlparser2": "3.9.2"
   },
   "devDependencies": {
+    "@gustavnikolaj/mocha-watch": "0.0.1",
     "coveralls": "^3.0.1",
     "express": "^4.14.0",
     "istanbul": "^0.4.5",
