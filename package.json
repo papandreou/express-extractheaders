@@ -33,7 +33,7 @@
     "mocha": "^5.2.0",
     "serve-static": "^1.11.1",
     "sinon": "^7.0.0",
-    "unexpected": "^10.18.1",
+    "unexpected": "^11.0.0",
     "unexpected-express": "^11.0.0",
     "unexpected-sinon": "^10.5.0"
   },
