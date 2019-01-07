@@ -6,7 +6,7 @@
   "scripts": {
     "test": "mocha",
     "prepublish": "npm test",
-    "lint": "jshint .",
+    "lint": "eslint .",
     "travis": "npm run lint && npm run coverage && cat ./coverage/lcov.info | coveralls",
     "coverage": "NODE_ENV=development istanbul cover _mocha -- --reporter dot && echo google-chrome coverage/lcov-report/index.html"
   },
@@ -27,10 +27,13 @@
   },
   "devDependencies": {
     "coveralls": "^3.0.1",
+    "eslint": "^5.12.0",
+    "eslint-config-pretty-standard": "^2.0.0",
+    "eslint-plugin-prettier": "^3.0.1",
     "express": "^4.14.0",
     "istanbul": "^0.4.5",
-    "jshint": "^2.9.3",
     "mocha": "^5.2.0",
+    "prettier": "^1.15.3",
     "serve-static": "^1.11.1",
     "sinon": "^7.0.0",
     "unexpected": "^11.0.0",
