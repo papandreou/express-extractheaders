@@ -8,7 +8,7 @@
     "prepublish": "npm test",
     "lint": "eslint .",
     "ci": "npm run lint && npm run coverage",
-    "coverage": "NODE_ENV=development istanbul cover _mocha -- --reporter dot && echo google-chrome coverage/lcov-report/index.html"
+    "coverage": "NODE_ENV=development nyc --reporter=lcov --reporter=text --all -- npm test && echo google-chrome coverage/lcov-report/index.html"
   },
   "repository": {
     "type": "git",
@@ -31,8 +31,8 @@
     "eslint-config-pretty-standard": "^2.0.0",
     "eslint-plugin-prettier": "^3.0.1",
     "express": "^4.14.0",
-    "istanbul": "^0.4.5",
     "mocha": "^5.2.0",
+    "nyc": "^13.1.0",
     "prettier": "^1.15.3",
     "serve-static": "^1.11.1",
     "sinon": "^7.0.0",
@@ -45,5 +45,10 @@
   "bugs": {
     "url": "https://github.com/papandreou/express-extractheaders/issues"
   },
-  "homepage": "https://github.com/papandreou/express-extractheaders"
+  "homepage": "https://github.com/papandreou/express-extractheaders",
+  "nyc": {
+    "include": [
+      "lib/**"
+    ]
+  }
 }
