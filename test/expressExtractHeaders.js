@@ -1,7 +1,5 @@
 var unexpected = require('unexpected');
-
 var expressExtractHeaders = require('../lib/expressExtractHeaders');
-
 var express = require('express');
 
 function respondWithChunks(res, chunks) {
