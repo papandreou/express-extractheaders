@@ -1,4 +1,3 @@
-/*global describe, it*/
 var unexpected = require('unexpected');
 
 var expressExtractHeaders = require('../lib/expressExtractHeaders');
