@@ -78,9 +78,7 @@ describe('expressExtractHeaders', function() {
         .use(expressExtractHeaders())
         .use(function(req, res) {
           res.send(
-            '<!DOCTYPE html>\n<html><head>' +
-              subject +
-              '</head><body>foo</body></html>'
+            `<!DOCTYPE html>\n<html><head>${subject}</head><body>foo</body></html>`
           );
         }),
       'to yield exchange',
@@ -340,9 +338,7 @@ describe('expressExtractHeaders', function() {
     var app = express()
       .use(expressExtractHeaders({ memoize: true }))
       .use(function(req, res) {
-        res.send(
-          '<meta http-equiv="Foo" content="Bar' + nextResponseNumber + '">'
-        );
+        res.send(`<meta http-equiv="Foo" content="Bar${nextResponseNumber}">`);
         nextResponseNumber += 1;
       });
 
@@ -480,12 +476,10 @@ describe('expressExtractHeaders', function() {
           } else {
             var id = nextId;
             nextId += 1;
-            res.setHeader('ETag', '"foo' + id + '"');
+            res.setHeader('ETag', `"foo${id}"`);
             res.setHeader('Content-Type', 'text/html; charset=UTF-8');
             res.end(
-              '<!DOCTYPE html>\n<html><head><meta http-equiv="Foo" content="Bar' +
-                id +
-                '"></head><body>foo</body></html>'
+              `<!DOCTYPE html>\n<html><head><meta http-equiv="Foo" content="Bar${id}"></head><body>foo</body></html>`
             );
           }
         }),
