@@ -5,7 +5,7 @@
   "main": "lib/expressExtractHeaders.js",
   "scripts": {
     "test": "mocha",
-    "lint": "eslint . && prettier --check '**/*.js'",
+    "lint": "eslint . && prettier --check '**/*.{js,md}'",
     "ci": "npm run lint && npm run coverage",
     "coverage": "NODE_ENV=development nyc --reporter=lcov --reporter=text --all -- npm test && echo google-chrome coverage/lcov-report/index.html"
   },
