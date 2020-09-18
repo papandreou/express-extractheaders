@@ -21,7 +21,7 @@
     "http-equiv"
   ],
   "dependencies": {
-    "hijackresponse": "4.0.1",
+    "hijackresponse": "git://github.com/gustavnikolaj/hijackresponse.git#split-stream-rewrite",
     "htmlparser2": "4.1.0"
   },
   "devDependencies": {
