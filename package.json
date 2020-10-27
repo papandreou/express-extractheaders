@@ -22,7 +22,7 @@
   ],
   "dependencies": {
     "hijackresponse": "^5.0.0",
-    "htmlparser2": "5.0.0"
+    "htmlparser2": "5.0.1"
   },
   "devDependencies": {
     "coveralls": "^3.0.1",
