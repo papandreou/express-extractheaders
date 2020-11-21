@@ -42,7 +42,7 @@
     "sinon": "^9.0.0",
     "unexpected": "^11.0.0",
     "unexpected-express": "^12.0.0",
-    "unexpected-sinon": "^10.5.0"
+    "unexpected-sinon": "^11.0.0"
   },
   "author": "Andreas Lind <andreaslindpetersen@gmail.com>",
   "license": "BSD-3-Clause",
