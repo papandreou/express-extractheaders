@@ -1,3 +1,21 @@
+### v4.0.0 (2020-11-22)
+
+#### Pull requests
+
+- [#45](https://github.com/papandreou/express-extractheaders/pull/45) Upgrade eslint-config-standard to version 16.0.1 ([depfu[bot]](mailto:23717796+depfu[bot]@users.noreply.github.com))
+- [#43](https://github.com/papandreou/express-extractheaders/pull/43) Upgrade htmlparser2 to version 5.0.1 ([depfu[bot]](mailto:23717796+depfu[bot]@users.noreply.github.com))
+- [#42](https://github.com/papandreou/express-extractheaders/pull/42) Upgrade eslint-config-standard to version 15.0.0 ([Andreas Lind](mailto:andreas.lind@peakon.com), [depfu[bot]](mailto:23717796+depfu[bot]@users.noreply.github.com))
+- [#41](https://github.com/papandreou/express-extractheaders/pull/41) Upgrade htmlparser2 to version 5.0.0 ([depfu[bot]](mailto:23717796+depfu[bot]@users.noreply.github.com))
+
+#### Commits to master
+
+- [Also check \*.json with prettier](https://github.com/papandreou/express-extractheaders/commit/4833c512cb843aab28378c69e576ff5f0be32d70) ([Andreas Lind](mailto:andreaslindpetersen@gmail.com))
+- [Add offline-github-changelog integration + CHANGELOG.md](https://github.com/papandreou/express-extractheaders/commit/1cb59fe0c5846ee07ad08f49ea79617293d10c30) ([Andreas Lind](mailto:andreaslindpetersen@gmail.com))
+- [Drop support for node.js &lt;10, add 14, lint with 14 \(semver-major\)](https://github.com/papandreou/express-extractheaders/commit/b4967b1b57968af818e4d990f746e8bd362d287f) ([Andreas Lind](mailto:andreaslindpetersen@gmail.com))
+- [Update unexpected + plugins](https://github.com/papandreou/express-extractheaders/commit/b73d744af826ca3a927fbfd491979e3f356675ce) ([Andreas Lind](mailto:andreaslindpetersen@gmail.com))
+- [prettier --write '\*\*\/\*.js'](https://github.com/papandreou/express-extractheaders/commit/b51b39ce7b28528ccb926d619fb78b809997f5e1) ([Andreas Lind](mailto:andreaslindpetersen@gmail.com))
+- [+1 more](https://github.com/papandreou/express-extractheaders/compare/v3.1.0...v4.0.0)
+
 ### v3.1.0 (2020-09-28)
 
 #### Pull requests
@@ -166,5 +184,5 @@
 - [Added travis config.](https://github.com/papandreou/express-extractheaders/commit/f3629243ff1b01fdcaeb347bd14f49d3bdbca0a0) ([Andreas Lind](mailto:andreas@one.com))
 
 ### v0.1.0
-- [Initial commit, 0.1.0.](https://github.com/papandreou/express-extractheaders/commit/5d3ca65b2034549ec9082f4d88daeef7566b6c78) ([Andreas Lind](mailto:andreas@one.com))
 
+- [Initial commit, 0.1.0.](https://github.com/papandreou/express-extractheaders/commit/5d3ca65b2034549ec9082f4d88daeef7566b6c78) ([Andreas Lind](mailto:andreas@one.com))
