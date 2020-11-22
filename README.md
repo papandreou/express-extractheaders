@@ -60,6 +60,10 @@ npm install express-extractheaders
 
 Only use this when you trust the downstream middleware. If you proxy to an untrusted host, it will gain the ability to set response headers on the behalf of your server.
 
+## Releases
+
+[Changelog](https://github.com/papandreou/express-extractheaders/blob/master/CHANGELOG.md)
+
 ## License
 
 express-extractheaders is licensed under a standard 3-clause BSD license -- see the
