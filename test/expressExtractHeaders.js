@@ -68,31 +68,30 @@ describe('expressExtractHeaders', function () {
     );
   });
 
-  expect.addAssertion('<string> to result in a Link header of <any>', function (
-    expect,
-    subject,
-    value
-  ) {
-    return expect(
-      express()
-        .use(expressExtractHeaders())
-        .use(function (req, res) {
-          res.send(
-            `<!DOCTYPE html>\n<html><head>${subject}</head><body>foo</body></html>`
-          );
-        }),
-      'to yield exchange',
-      {
-        request: '/',
-        response: {
-          headers: {
-            'Content-Type': 'text/html; charset=utf-8',
-            Link: value,
+  expect.addAssertion(
+    '<string> to result in a Link header of <any>',
+    function (expect, subject, value) {
+      return expect(
+        express()
+          .use(expressExtractHeaders())
+          .use(function (req, res) {
+            res.send(
+              `<!DOCTYPE html>\n<html><head>${subject}</head><body>foo</body></html>`
+            );
+          }),
+        'to yield exchange',
+        {
+          request: '/',
+          response: {
+            headers: {
+              'Content-Type': 'text/html; charset=utf-8',
+              Link: value,
+            },
           },
-        },
-      }
-    );
-  });
+        }
+      );
+    }
+  );
 
   it('should extract <link rel="preconnect">', function () {
     return expect(
@@ -607,36 +606,23 @@ describe('expressExtractHeaders', function () {
     );
   });
 
-  expect.addAssertion('<array> to come out as <string>', function (
-    expect,
-    subject,
-    value
-  ) {
-    var app = express()
-      .use(expressExtractHeaders({ memoize: true }))
-      .use(function (req, res) {
-        res.set('Content-Type', 'text/html; charset=utf-8');
-        res.set('ETag', '"foo"');
-        if (req.headers['if-none-match'] === '"foo"') {
-          res.status(304).end();
-        } else {
-          subject.forEach(function (chunk) {
-            res.write(chunk);
-          });
-          res.end();
-        }
-      });
-    return expect(app, 'to yield exchange', {
-      request: '/',
-      response: {
-        headers: {
-          'Content-Type': 'text/html; charset=utf-8',
-          'X-Frame-Options': 'SAMEORIGIN',
-        },
-        body: value,
-      },
-    }).then(function () {
-      // Check that we get the same result on a subsequent request
+  expect.addAssertion(
+    '<array> to come out as <string>',
+    function (expect, subject, value) {
+      var app = express()
+        .use(expressExtractHeaders({ memoize: true }))
+        .use(function (req, res) {
+          res.set('Content-Type', 'text/html; charset=utf-8');
+          res.set('ETag', '"foo"');
+          if (req.headers['if-none-match'] === '"foo"') {
+            res.status(304).end();
+          } else {
+            subject.forEach(function (chunk) {
+              res.write(chunk);
+            });
+            res.end();
+          }
+        });
       return expect(app, 'to yield exchange', {
         request: '/',
         response: {
@@ -646,9 +632,21 @@ describe('expressExtractHeaders', function () {
           },
           body: value,
         },
+      }).then(function () {
+        // Check that we get the same result on a subsequent request
+        return expect(app, 'to yield exchange', {
+          request: '/',
+          response: {
+            headers: {
+              'Content-Type': 'text/html; charset=utf-8',
+              'X-Frame-Options': 'SAMEORIGIN',
+            },
+            body: value,
+          },
+        });
       });
-    });
-  });
+    }
+  );
 
   it('should omit two meta tags that reside in separate chunks ', function () {
     return expect(
