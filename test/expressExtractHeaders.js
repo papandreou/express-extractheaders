@@ -599,8 +599,7 @@ describe('expressExtractHeaders', function () {
             'Content-Type': 'text/html; charset=utf-8',
             'X-Frame-Options': 'SAMEORIGIN',
           },
-          body:
-            '<!DOCTYPE html>\n<html><head><title>thetitle</title></head><body>foo</body></html>',
+          body: '<!DOCTYPE html>\n<html><head><title>thetitle</title></head><body>foo</body></html>',
         },
       }
     );
