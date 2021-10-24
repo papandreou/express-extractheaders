@@ -1,9 +1,9 @@
-var unexpected = require('unexpected');
-var expressExtractHeaders = require('../lib/expressExtractHeaders');
-var express = require('express');
+const unexpected = require('unexpected');
+const expressExtractHeaders = require('../lib/expressExtractHeaders');
+const express = require('express');
 
 function respondWithChunks(res, chunks) {
-  var nextChunkNumber = 0;
+  let nextChunkNumber = 0;
   (function sendNextChunkOrEnd() {
     if (nextChunkNumber < chunks.length) {
       res.write(chunks[nextChunkNumber]);
@@ -16,7 +16,7 @@ function respondWithChunks(res, chunks) {
 }
 
 describe('expressExtractHeaders', function () {
-  var expect = unexpected
+  const expect = unexpected
     .clone()
     .installPlugin(require('unexpected-express'))
     .installPlugin(require('unexpected-sinon'));
@@ -46,7 +46,7 @@ describe('expressExtractHeaders', function () {
   });
 
   it('should specify response headers based on <meta> tags in the response body', function () {
-    var responseHtml =
+    const responseHtml =
       '<!DOCTYPE html>\n<html><head><meta http-equiv="Foo" content="Bar"></head><body>foo</body></html>';
     return expect(
       express()
@@ -173,7 +173,7 @@ describe('expressExtractHeaders', function () {
   });
 
   it('should specify response headers based on <META> tags in the response body', function () {
-    var responseHtml =
+    const responseHtml =
       '<!DOCTYPE html>\n<html><head><META HTTP-EQUIV="Foo" CONTENT="Bar"></head><body>foo</body></html>';
     return expect(
       express()
@@ -196,7 +196,7 @@ describe('expressExtractHeaders', function () {
   });
 
   it('should set an empty header when a meta tag has http-equiv, but no content attribute', function () {
-    var responseHtml =
+    const responseHtml =
       '<!DOCTYPE html>\n<html><head><meta http-equiv="Foo"></head><body>foo</body></html>';
     return expect(
       express()
@@ -219,7 +219,7 @@ describe('expressExtractHeaders', function () {
   });
 
   it('should not break when there are other types of meta tags', function () {
-    var responseHtml =
+    const responseHtml =
       '<!DOCTYPE html>\n<html><head><meta foo="bar"></head><body>foo</body></html>';
     return expect(
       express()
@@ -241,7 +241,7 @@ describe('expressExtractHeaders', function () {
   });
 
   it('should work with responses with chunks before, during and after </head>', function () {
-    var responseHtmlChunks = [
+    const responseHtmlChunks = [
       '<!DOCTYPE html>\n',
       '<html><head><META ',
       'HTTP-EQUIV="Foo" CONTENT="Bar">',
@@ -270,7 +270,7 @@ describe('expressExtractHeaders', function () {
   });
 
   it('should work with responses with chunks before, during and after </head> when the request method is HEAD', function () {
-    var responseHtmlChunks = [
+    const responseHtmlChunks = [
       '<!DOCTYPE html>\n',
       '<html><head><META ',
       'HTTP-EQUIV="Foo" CONTENT="Bar">',
@@ -332,9 +332,9 @@ describe('expressExtractHeaders', function () {
   });
 
   it('should always serve the first extracted set of response headers when memoize:true is given', function () {
-    var nextResponseNumber = 1;
+    let nextResponseNumber = 1;
 
-    var app = express()
+    const app = express()
       .use(expressExtractHeaders({ memoize: true }))
       .use(function (req, res) {
         res.send(`<meta http-equiv="Foo" content="Bar${nextResponseNumber}">`);
@@ -363,7 +363,7 @@ describe('expressExtractHeaders', function () {
   });
 
   it('should overwrite response headers from the upstream middleware, even when memoizing', function () {
-    var app = express()
+    const app = express()
       .use(expressExtractHeaders({ memoize: true }))
       .use(function (req, res) {
         // Currently depends on the upstream middleware playing nice when the header has already been set:
@@ -410,7 +410,7 @@ describe('expressExtractHeaders', function () {
   });
 
   it('should not break if there is a parse error in the markup from upstream', function () {
-    var bogusHtml = '!!!-øæåæ<>>>å112389J/)(/HJ(=/HJQ(=WE';
+    const bogusHtml = '!!!-øæåæ<>>>å112389J/)(/HJ(=/HJQ(=WE';
     return expect(
       express()
         .use(expressExtractHeaders())
@@ -463,7 +463,7 @@ describe('expressExtractHeaders', function () {
   });
 
   it('should send the same extracted headers when the upstream middleware responds 304 and does not include the additional headers', function () {
-    var nextId = 1;
+    let nextId = 1;
 
     return expect(
       express()
@@ -473,7 +473,7 @@ describe('expressExtractHeaders', function () {
             res.setHeader('ETag', req.headers['if-none-match']);
             res.status(304).end();
           } else {
-            var id = nextId;
+            const id = nextId;
             nextId += 1;
             res.setHeader('ETag', `"foo${id}"`);
             res.setHeader('Content-Type', 'text/html; charset=UTF-8');
@@ -608,7 +608,7 @@ describe('expressExtractHeaders', function () {
   expect.addAssertion(
     '<array> to come out as <string>',
     function (expect, subject, value) {
-      var app = express()
+      const app = express()
         .use(expressExtractHeaders({ memoize: true }))
         .use(function (req, res) {
           res.set('Content-Type', 'text/html; charset=utf-8');
@@ -694,7 +694,7 @@ describe('expressExtractHeaders', function () {
   });
 
   it('should adjust Content-Length when omitting ranges', function () {
-    var app = express()
+    const app = express()
       .use(expressExtractHeaders({ memoize: true }))
       .use(function (req, res) {
         res.set('Content-Length', '114');
@@ -724,7 +724,7 @@ describe('expressExtractHeaders', function () {
   });
 
   it('should adjust Content-Length when omitting ranges, even when it has been provided as a number', function () {
-    var app = express()
+    const app = express()
       .use(expressExtractHeaders({ memoize: true }))
       .use(function (req, res) {
         res.set('Content-Type', 'text/html; charset=utf-8');
@@ -754,7 +754,7 @@ describe('expressExtractHeaders', function () {
   });
 
   it('should convert newlines to spaces when serving headers', function () {
-    var app = express()
+    const app = express()
       .use(expressExtractHeaders({ memoize: true }))
       .use(function (req, res) {
         res.set('Content-Length', '114');
