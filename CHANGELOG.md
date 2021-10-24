@@ -1,3 +1,29 @@
+### v4.0.1 (2021-10-24)
+
+#### Pull requests
+
+- [#74](https://github.com/papandreou/express-extractheaders/pull/74) Upgrade prettier to version 2.4.1 ([depfu[bot]](mailto:23717796+depfu[bot]@users.noreply.github.com))
+- [#77](https://github.com/papandreou/express-extractheaders/pull/77) Upgrade eslint-plugin-promise to version 5.1.1 ([depfu[bot]](mailto:23717796+depfu[bot]@users.noreply.github.com))
+- [#69](https://github.com/papandreou/express-extractheaders/pull/69) Upgrade htmlparser2 to version 7.0.0 ([depfu[bot]](mailto:23717796+depfu[bot]@users.noreply.github.com))
+- [#62](https://github.com/papandreou/express-extractheaders/pull/62) Upgrade sinon to version 11.1.1 ([depfu[bot]](mailto:23717796+depfu[bot]@users.noreply.github.com))
+- [#63](https://github.com/papandreou/express-extractheaders/pull/63) Upgrade eslint-plugin-mocha to version 9.0.0 ([depfu[bot]](mailto:23717796+depfu[bot]@users.noreply.github.com))
+- [#57](https://github.com/papandreou/express-extractheaders/pull/57) Upgrade htmlparser2 to version 6.1.0 ([depfu[bot]](mailto:23717796+depfu[bot]@users.noreply.github.com))
+- [#56](https://github.com/papandreou/express-extractheaders/pull/56) Upgrade sinon to version 10.0.0 ([depfu[bot]](mailto:23717796+depfu[bot]@users.noreply.github.com))
+- [#55](https://github.com/papandreou/express-extractheaders/pull/55) Upgrade htmlparser2 to version 6.0.1 ([depfu[bot]](mailto:23717796+depfu[bot]@users.noreply.github.com))
+- [#52](https://github.com/papandreou/express-extractheaders/pull/52) Upgrade mocha to version 8.3.0 ([depfu[bot]](mailto:23717796+depfu[bot]@users.noreply.github.com))
+- [#51](https://github.com/papandreou/express-extractheaders/pull/51) Upgrade htmlparser2 to version 6.0.0 ([depfu[bot]](mailto:23717796+depfu[bot]@users.noreply.github.com))
+- [#50](https://github.com/papandreou/express-extractheaders/pull/50) Upgrade eslint-config-prettier to version 7.0.0 ([depfu[bot]](mailto:23717796+depfu[bot]@users.noreply.github.com))
+- [#49](https://github.com/papandreou/express-extractheaders/pull/49) Upgrade eslint-plugin-standard to version 5.0.0 ([depfu[bot]](mailto:23717796+depfu[bot]@users.noreply.github.com))
+
+#### Commits to master
+
+- [var =&gt; const](https://github.com/papandreou/express-extractheaders/commit/888f488f354ed2f6dd7c0b2533418c787c3066fb) ([Andreas Lind](mailto:andreaslindpetersen@gmail.com))
+- [eslint --fix .](https://github.com/papandreou/express-extractheaders/commit/9f4bdbecae6a834be57ac6c082a4666db4bacca4) ([Andreas Lind](mailto:andreaslindpetersen@gmail.com))
+- [Send strings rather than Buffer instances into htmlparser2](https://github.com/papandreou/express-extractheaders/commit/fe9fba7dad134996747a1190583542ded984ab54) ([Andreas Lind](mailto:andreaslindpetersen@gmail.com))
+- [Unsupport node.js 10](https://github.com/papandreou/express-extractheaders/commit/0817b66d133b3dccfe71eda18b63d5d9385f76ed) ([Andreas Lind](mailto:andreaslindpetersen@gmail.com))
+- [Replace Travis with Github Actions](https://github.com/papandreou/express-extractheaders/commit/35894a1bd0e6408a518a52287b3498e61f35f79a) ([Andreas Lind](mailto:andreaslindpetersen@gmail.com))
+- [+4 more](https://github.com/papandreou/express-extractheaders/compare/v4.0.0...v4.0.1)
+
 ### v4.0.0 (2020-11-22)
 
 #### Pull requests
